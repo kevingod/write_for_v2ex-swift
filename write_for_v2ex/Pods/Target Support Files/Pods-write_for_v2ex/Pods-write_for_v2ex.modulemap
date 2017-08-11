@@ -1,0 +1,6 @@
+framework module Pods_write_for_v2ex {
+  umbrella header "Pods-write_for_v2ex-umbrella.h"
+
+  export *
+  module * { export * }
+}
