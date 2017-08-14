@@ -8,15 +8,55 @@
 
 import UIKit
 
+import DrawerController
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        self.window?.backgroundColor = UIColor.white
+        self.window?.makeKeyAndVisible()
+        
+        //创建根视图
+        self.setRootView()
+        
         return true
+    }
+    
+    //创建根视图
+    func setRootView() -> Void {
+        
+        let leftMenu : LeftMenuViewController? = LeftMenuViewController()
+        let rightMenu : RightMenuViewController? = RightMenuViewController()
+        
+        //home
+        let home : HomeViewController? = HomeViewController()
+        let nav : UINavigationController? = UINavigationController.init(rootViewController: home!)
+        
+        //侧滑菜单
+        let drawer : DrawerController? = DrawerController()
+        drawer?.leftDrawerViewController = leftMenu
+        drawer?.rightDrawerViewController = rightMenu
+        drawer?.centerViewController = nav
+        drawer?.maximumLeftDrawerWidth = 230
+        drawer?.maximumRightDrawerWidth = 100
+        //打开方式
+        drawer?.openDrawerGestureModeMask=OpenDrawerGestureMode.panningCenterView
+        //关闭方式
+        drawer?.closeDrawerGestureModeMask=CloseDrawerGestureMode.all;
+        
+        //设置根视图
+        self.window?.rootViewController = drawer;
+        
+        //持有视图
+        V2Client.shareInstance.drawerController = drawer
+        V2Client.shareInstance.centerControoler = home
+        V2Client.shareInstance.centerNavigation = nav
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
